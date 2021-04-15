@@ -15,15 +15,20 @@ A Tree can be saved to a json file with a two nesting level; the same structure 
 
 To use the App do the following:
 
-0) Clone this repository and cahnge directory into it
+1) Clone this repository and cahnge directory into it
 
-1) Run ```npm install``` (the force flag might be required for those packages that are not yet compatible with the latest React version, this will be resolved eventually)
+2) Make sure you have npm installed (check your OS howto) and install webpack i.e. ```npm install --save-dev webpack```. After this, install the following plugins ```npm install --save-dev html-webpack-change-assets-extension-plugin``` and ```npm install --save-dev html-webpack-plugin``` 
 
-2) Run ```npm run build --profile; npm run postbuild```  (development build, you can also run the production build in case)
+3) Run ```npm install``` (the force flag might be required for those packages that are not yet compatible with the latest React version, this will be resolved eventually)
 
-3) Set the environment variables ```USERNAME``` and ```PASSWORD``` and run ```python3 main.py```
+4) Run ```npm run build --profile; npm run postbuild```  (development build, you can also run the production build in case)
 
-4) Open the browser at localhost:5000
+5) Install python3-venv (on linux e.g. ```sudo apt-get install python3-venv```) and start the virtual environment e.g. ```python3 -m venv venv``` and 
+```source venv/bin/activate```; once in the virtual environment, install the needed python packages i.e. ```pip3 install -r requirements.txt```
+
+6) Set the environment variables ```USERNAME``` and ```PASSWORD``` and run ```python3 main.py```
+
+7) Open the browser at localhost:5000
 
 Please note that the security/production environment of Flask is not addressed in this repository, and it should be run with e.g. Nginx and Gunicorn.
 
