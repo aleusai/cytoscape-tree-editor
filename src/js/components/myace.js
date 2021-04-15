@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-//import AceEditor from "react-ace";
-import { split as SplitEditor } from "react-ace/dist/react-ace.min.js";
+import { split as SplitEditor } from "react-ace";
+//import { split as SplitEditor } from "react-ace/dist/react-ace.min.js";
 import ace from "ace-builds/src-min-noconflict/ace";
 import "ace-builds/webpack-resolver";
 import "ace-builds/src-noconflict/mode-json";

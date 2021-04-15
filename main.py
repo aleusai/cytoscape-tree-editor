@@ -8,7 +8,6 @@ from flask_manage_webpack import FlaskManageWebpack
 import json
 from callbacks_helpers import callbacks_functions as cbf
 from nx import to_client_convention, from_file_to_cy, classes as pc
-import ast
 import sys
 import os
 import copy
@@ -58,14 +57,21 @@ auth = HTTPBasicAuth()
 socketio = SocketIO(app, cors_allowed_origins="*", max_http_buffer_size=10000000)
 Session(app)
 
-users = {
-    "password": generate_password_hash(os.getenv('PASSWORD')),
-    "user": os.getenv('USERNAME')
-}
+try:
+    users = {
+        "password": generate_password_hash(os.getenv('PASSWORD')),
+        "user": os.getenv('USERNAME')
+    }
+except:
+    users = {
+        "password": '',
+        "user": ''
+    }
 
 @auth.verify_password
 def verify_password(username, password):
-    print(username == users['user'])
+    if username == '': 
+        return False
     if username == users['user'] and \
             check_password_hash(users['password'],password):
         return username

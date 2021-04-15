@@ -24,7 +24,7 @@ const SaveLoad = lazy(() => import("./js/components/saveLoad.js"), {
 });
 
 import Mydiv from "./js/components/mydiv.js";
-import NewWindow from "react-new-window";
+//import NewWindow from "react-new-window";
 import { uploadFile, forward, backward } from "./emitters";
 const Cytoscape = lazy(() => import("./js/components/cytoComponent"));
 
@@ -34,9 +34,6 @@ const MySocket = lazy(() => import("././js/components/core.js"), {
   fallback: <div>Loading SocketIO...</div>,
 });
 
-
-console.log("START");
-
 class Nav extends React.Component {
   state = {
     active: "A",
@@ -45,7 +42,6 @@ class Nav extends React.Component {
 
   componentDidMount() {
     let mythis = this;
-    console.log("NAV MOUNTED");
     Mousetrap.bind("ctrl+w", function () {
       if (mythis.state.active == "A") {
         mythis.setState({ active: "B" });
@@ -140,10 +136,10 @@ class Nav extends React.Component {
         <Suspense fallback={<div>Loading Drawer window...</div>}>
           <div>
             <MyDrawer func={this.onSelect.bind(this)} />
-            <NewWindow>
+            
               <div>The editors in this window control the parent one</div>
               {ActionComponent}
-            </NewWindow>
+            
           </div>
         </Suspense>
       );
@@ -157,7 +153,7 @@ function RenderApp(props) {
   const [myObject, setObject] = useState({ socket: undefined });
 
   useEffect(() => {
-    console.log('RenderApp', myObject);
+    console.log('RenderApp');
   }, []);
 
   return (

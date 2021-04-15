@@ -1,4 +1,5 @@
-import cytoscape from "cytoscape/dist/cytoscape.min.js";
+//import cytoscape from "cytoscape/dist/cytoscape.min.js";
+import cytoscape from "cytoscape";
 import popper from "cytoscape-popper";
 import dagre from "cytoscape-dagre";
 import coseBilkent from "cytoscape-cose-bilkent";
@@ -726,10 +727,8 @@ class Cytoscape extends Component {
       socket.styles
     ) {
       var layout = socket.layout ? socket.layout : { name: "dagre" };
-      var elements = socket.elements;
       var styles = socket.styles;
     } else {
-      var elements = [];
       var layout = { name: "dagre" };
       var styles = [];
     }
@@ -806,4 +805,4 @@ class Cytoscape extends Component {
 }
 
 export default Cytoscape;
-export { CytoscapeComponent };
+//export { CytoscapeComponent };
