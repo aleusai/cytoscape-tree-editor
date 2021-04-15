@@ -14,11 +14,13 @@ The App uses a Flask backend with socket-io and React on the front-end. Future e
 
 To use the app do the following:
 
-1) npm -i
+1) npm install --force (the force flag is required for those packages that are not yet compatible with the latest react version, this will be resolved eventually)
 
-2) python3 main.py
+2) npm run build --profile; npm run postbuild  (development build, you can also run the production build in case)
 
-3) Open the browser at localhost:5000
+3) python3 main.py
+
+4) Open the browser at localhost:5000
 
 Please note that the security/production environment of Flask is not addressed in this repository, and it should be run with e.g. Nginx and Gunicorn.
 
