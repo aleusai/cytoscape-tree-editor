@@ -2,7 +2,6 @@ import copy
 from nx import to_client_convention, from_file_to_cy, classes as pc
 from callbacks_helpers.create_node import create_node
 import sys
-import traceback
 import json
 from flask_session import Session
 import _ctypes
