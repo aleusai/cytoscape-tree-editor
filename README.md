@@ -1,6 +1,6 @@
 # Cytoscape Tree Editor
 
-The App provides a tool to create/upload/download/edit a (Cytoscape) Tree. 
+The App provides a tool to create/upload/download/edit a Cytoscape Tree (go to https://js.cytoscape.org/ for further information on Cytoscape). 
 
 The Tree itself is made of several nodes, which differ from one another because of the data payload that they have: the nodes can be 
 thought of as different components, if one thinks of such a Tree as e.g. a configuration file. Each node is created with a default 
