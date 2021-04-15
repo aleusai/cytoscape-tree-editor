@@ -14,11 +14,11 @@ The App uses a Flask backend with socket-io and React on the front-end. Future e
 
 To use the app do the following:
 
-1) npm install --force (the force flag is required for those packages that are not yet compatible with the latest react version, this will be resolved eventually)
+1) Run ```npm install``` (the force flag might be required for those packages that are not yet compatible with the latest React version, this will be resolved eventually)
 
-2) npm run build --profile; npm run postbuild  (development build, you can also run the production build in case)
+2) Run ```npm run build --profile; npm run postbuild```  (development build, you can also run the production build in case)
 
-3) python3 main.py
+3) Set the environment variables ```USERNAME``` and ```PASSWORD``` and run ```python3 main.py```
 
 4) Open the browser at localhost:5000
 
