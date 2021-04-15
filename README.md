@@ -14,6 +14,8 @@ The App uses a Flask backend with socket-io and React on the front-end. Future e
 
 To use the app do the following:
 
+0) Clone this repository and cahnge directory into it
+
 1) Run ```npm install``` (the force flag might be required for those packages that are not yet compatible with the latest React version, this will be resolved eventually)
 
 2) Run ```npm run build --profile; npm run postbuild```  (development build, you can also run the production build in case)
