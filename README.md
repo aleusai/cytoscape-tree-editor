@@ -7,7 +7,7 @@ Cytoscape is initialized in headless mode, which allows for a performance boost 
 
 A Tree is made of several nodes, which differ from one another because of the data payload that they have: the nodes can be 
 thought of as different components, if one thinks of such a Tree as e.g. a configuration file. Each node is created with a default 
-data payload, specific to that node type, which can then be edited/changed.. 
+data payload, specific to that node type, which can then be edited/changed. 
 
 When editing the Tree, one can create/clone/delete a node, as well as modify the payload content. 
 
@@ -15,9 +15,9 @@ A Tree can be saved to a json file with a two nesting level; the same structure 
 
 To use the App do the following:
 
-1) Clone this repository and cahnge directory into it
+1) Clone this repository and change directory into it
 
-2) Make sure you have npm installed (check your OS howto) and install webpack i.e. ```npm install --save-dev webpack```. After this, install the following plugins ```npm install --save-dev html-webpack-change-assets-extension-plugin``` and ```npm install --save-dev html-webpack-plugin``` 
+2) Make sure you have npm installed (check your OS how-to) and install webpack i.e. ```npm install --save-dev webpack```. After this, install the following plugins ```npm install --save-dev html-webpack-change-assets-extension-plugin``` and ```npm install --save-dev html-webpack-plugin``` 
 
 3) Run ```npm install``` (the force flag might be required for those packages that are not yet compatible with the latest React version, this will be resolved eventually)
 
