@@ -1,5 +1,5 @@
 {
-  "homepage": "http://aleusai.github.io/cytoscape-tree-editor",
+  "homepage": "http://aleusai.github.io/",
   "name": "cytoscape-tree-editor",
   "version": "1.0.0",
   "description": "",
@@ -10,7 +10,7 @@
     "deploy": "gh-pages -d build",
     "probuild": "webpack --mode production ",
     "build": "webpack --mode development ",
-    "postbuild": "cp dist/*.html templates/; cp dist/*.js* static/; cp src/favicon.ico static/; cp -r static build",
+    "postbuild": "cp dist/*.html templates/; cp dist/*.js* static/; cp src/favicon.ico static/; cp -r static build; cp dist/*.html build/",
     "bundle-report": "webpack-bundle-analyzer --port 4200 dist/stats.json"
   },
   "jest": {

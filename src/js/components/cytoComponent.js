@@ -634,10 +634,8 @@ function createNode(node_type, cy, myjson, name, socket) {
   else {
     var name = c;
   }
-  console.log('COLOR=', cy_layout.class_dict_colors[node_type]);
   if (!('root' in socket['parents_dict'])) {
     var id_root = Math.random().toString(20).substr(2, 6);
-    console.log('ROOT ID', id_root);
     socket['parents_dict']["root"] = id_root;
     cy.add({
       group: 'nodes', 'classes': 'red', data: {
@@ -679,7 +677,6 @@ function createNode(node_type, cy, myjson, name, socket) {
     var id_root_parent = Math.random().toString(20).substr(2, 6);
 
     socket['parents_dict'][parent] = id_root_parent;
-    console.log('PARENT==', socket['parents_dict'][parent], id_root_parent);
     if (node_type + 'Parent' in socket['defaults']) {
 
       cy.add({
@@ -692,7 +689,6 @@ function createNode(node_type, cy, myjson, name, socket) {
           [socket["to_client_convention"]]: parentData
         }
       });
-      console.log('P1', cy.elements());
     }
     else {
       cy.add({
@@ -705,7 +701,6 @@ function createNode(node_type, cy, myjson, name, socket) {
           'name': parent
         }
       });
-      console.log('P2', id_root_parent, cy.elements());
     }
     cy.add({
       group: 'edges', data: {
@@ -717,7 +712,6 @@ function createNode(node_type, cy, myjson, name, socket) {
       }
     });
   };
-  console.log('P3', c, socket['parents_dict']['root']);
   cy.add({
     group: 'edges', data: {
       'classes': 'followerEdge',
@@ -786,7 +780,6 @@ class Cytoscape extends Component {
           let cy = mythis.myRef.current._cy;
           let socket = mythis.props.getObject();
           let node_data = JSON.parse(data);
-          console.log('DATA EDIT=', node_data, node_data['id']);
           cy.getElementById(node_data['id']).data(node_data);
           mythis.props.setObject({ socket: socket });
         };
@@ -802,7 +795,6 @@ class Cytoscape extends Component {
           socket = createNode(node_type, cy, myjson, '', socket);
           let layout = !(layout in socket) ? 'dagre' : socket['layout'];
           if (!(layout in socket)) socket['layout'] = layout;
-          console.log('LAYOUT=', layout);
           cy.makeLayout({ name: layout }).run();
           mythis.props.setObject({ socket: socket });
         };
@@ -853,7 +845,6 @@ class Cytoscape extends Component {
       socket.elements.length &&
       socket.styles
     ) {
-      console.log('CHECK RENDER1');
       var layout = socket.layout ? socket.layout : { name: "dagre" };
       var styles = socket.styles;
     } else {
@@ -861,8 +852,6 @@ class Cytoscape extends Component {
         name: "circle"
       };
       var styles = socket['styles'];
-      console.log('CHECK RENDER2', styles);
-      //socket.styles;
     }
 
 
