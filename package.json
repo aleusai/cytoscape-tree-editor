@@ -10,7 +10,7 @@
     "deploy": "gh-pages -d build",
     "probuild": "webpack --mode production ",
     "build": "webpack --mode development ",
-    "postbuild": "cp -r dist build; cp dist/*.html templates/; cp dist/*.js* static/; cp src/favicon.ico static/",
+    "postbuild": "cp dist/*.html templates/; cp dist/*.js* static/; cp src/favicon.ico static/; cp -r static build",
     "bundle-report": "webpack-bundle-analyzer --port 4200 dist/stats.json"
   },
   "jest": {
