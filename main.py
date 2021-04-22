@@ -68,20 +68,20 @@ except:
         "user": ''
     }
 
-@auth.verify_password
-def verify_password(username, password):
-    if username == '': 
-        return False
-    if username == users['user'] and \
-            check_password_hash(users['password'],password):
-        return username
+#@auth.verify_password
+#def verify_password(username, password):
+#    if username == '': 
+#        return False
+#    if username == users['user'] and \
+#            check_password_hash(users['password'],password):
+#        return username
 
 @app.route('/favicon.ico')
 def favicon():
     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/')
-@auth.login_required
+#@auth.login_required
 def sessions():
     return render_template('index.html')
 

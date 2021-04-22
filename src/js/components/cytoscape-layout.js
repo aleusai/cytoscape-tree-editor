@@ -143,9 +143,9 @@ Distinct colors '#e6194b', '#3cb44b', '#ffe119', '#4363d8',
 
 // used in case the client overrides the colors form the server
 let class_dict_colors = {
-  Component1: "maroon",
+  Component1: "yellow",
   Component2: "brown",
-  Component3: "olive",
+  Component3: "cyan",
   Component4: "teal",
   Component5: "navy",
   Component6: "orange",
@@ -158,7 +158,7 @@ let class_dict_colors = {
 
 for (const [key, value] of Object.entries(class_dict_colors)) {
   style = {
-    selector: "." + value,
+    selector: '.' + value,
     style: { "background-color": value, "line-color": value },
   };
   main_styles.push(style);

@@ -85,7 +85,7 @@ def create_node(node_type, g, myjson=None, name=None, session=None) -> dict():
     g['edges'].append( {
                         'classes': 'followerEdge',
                         "data": {
-                        "id": 'root' + '-' "root" + '-' + parent,
+                        "id": 'root' + '-' + "root" + '-' + parent,
                         "source": session['parents_dict']['root'],
                         "target": session['parents_dict'][parent]
                         }

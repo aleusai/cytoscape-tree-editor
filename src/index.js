@@ -1,38 +1,51 @@
 //'use strict';
 import React, { useState, lazy, Suspense, useEffect } from "react";
 import MyDrawer from "./myDrawer.js";
+import PubSub from "pubsub-js";
+import createNode from "./js/components/cytoComponent.js";
 import UploadFileMouseTrap from "./js/components/uploadMouseTrap.js";
 //debugger;
 
-const NodeEditor = lazy(() => import("./js/components/nodeEditor.js"), {
-  fallback: <div>Loading...</div>,
-});
-const FullConfigEditor = lazy(
-  () => import("./js/components/fullConfigEditor.js"),
-  {
-    fallback: <div>Loading...</div>,
-  }
-);
-const PipelineEditor = lazy(() => import("./js/components/pipelineEditor.js"), {
-  fallback: <div>Loading...</div>,
-});
-const DefaultsEditor = lazy(() => import("./js/components/defaultsEditor.js"), {
-  fallback: <div>Loading...</div>,
-});
-const SaveLoad = lazy(() => import("./js/components/saveLoad.js"), {
-  fallback: <div>Loading...</div>,
-});
+//const NodeEditor = lazy(() => import("./js/components/nodeEditor.js"), {
+//  fallback: <div>Loading...</div>,
+//});
+import NodeEditor from "./js/components/nodeEditor.js";
+
+//const FullConfigEditor = lazy(
+//  () => import("./js/components/fullConfigEditor.js"),
+//  {
+//    fallback: <div>Loading...</div>,
+//  }
+//);
+//import FullConfigEditor from "./js/components/fullConfigEditor.js";
+
+
+//const PipelineEditor = lazy(() => import("./js/components/pipelineEditor.js"), {
+//  fallback: <div>Loading...</div>,
+//});
+//import PipelineEditor from "./js/components/pipelineEditor.js";
+
+//const DefaultsEditor = lazy(() => import("./js/components/defaultsEditor.js"), {
+//  fallback: <div>Loading...</div>,
+//});
+//import DefaultsEditor from "./js/components/defaultsEditor.js";
+//const SaveLoad = lazy(() => import("./js/components/saveLoad.js"), {
+//  fallback: <div>Loading...</div>,
+//});
+//import SaveLoad from "./js/components/saveLoad.js";
 
 import Mydiv from "./js/components/mydiv.js";
-//import NewWindow from "react-new-window";
-import { uploadFile, forward, backward } from "./emitters";
-const Cytoscape = lazy(() => import("./js/components/cytoComponent"));
-
+import NewWindow from "react-new-window";
+//import { uploadFile, forward, backward } from "./emitters";
+//const Cytoscape = lazy(() => import("./js/components/cytoComponent"));
+import Cytoscape from "./js/components/cytoComponent";
 var Mousetrap = require("mousetrap");
 
-const MySocket = lazy(() => import("././js/components/core.js"), {
-  fallback: <div>Loading SocketIO...</div>,
-});
+//const MySocket = lazy(() => import("././js/components/core.js"), {
+//  fallback: <div>Loading SocketIO...</div>,
+//});
+
+import { socket } from "././js/components/core.js";
 
 class Nav extends React.Component {
   state = {
@@ -78,43 +91,6 @@ class Nav extends React.Component {
           </Suspense>
         );
         break;
-      case "Save/Load":
-        var ActionComponent = (
-          <Suspense fallback={<div>Loading...</div>}>
-            <SocketContext.Consumer>
-              {(value) => (
-                <SaveLoad
-                  forward={forward.bind(value.socket)()}
-                  backward={backward.bind(value.socket)()}
-                  uploadTo={uploadFile.bind(value.socket)()}
-                  jsonFile={value.socket["rawJson"]}
-                />
-              )}
-            </SocketContext.Consumer>
-          </Suspense>
-        );
-        break;
-      case "Full Config Editor":
-        var ActionComponent = (
-          <Suspense fallback={<div>Loading...</div>}>
-            <FullConfigEditor />
-          </Suspense>
-        );
-        break;
-      case "Defaults Editor":
-        var ActionComponent = (
-          <Suspense fallback={<div>Loading...</div>}>
-            <DefaultsEditor />
-          </Suspense>
-        );
-        break;
-      case "Pipeline Editor":
-        var ActionComponent = (
-          <Suspense fallback={<div>Loading...</div>}>
-            <PipelineEditor />
-          </Suspense>
-        );
-        break;
       case "Close":
         var ActionComponent = <Mydiv></Mydiv>;
         break;
@@ -135,11 +111,12 @@ class Nav extends React.Component {
       return (
         <Suspense fallback={<div>Loading Drawer window...</div>}>
           <div>
-            <MyDrawer func={this.onSelect.bind(this)} />
-            
+            <NewWindow>
+              <MyDrawer func={this.onSelect.bind(this)} />
+
               <div>The editors in this window control the parent one</div>
               {ActionComponent}
-            
+            </NewWindow>
           </div>
         </Suspense>
       );
@@ -149,37 +126,41 @@ class Nav extends React.Component {
 
 const SocketContext = React.createContext();
 
+
+const SocketContext2 = React.createContext(socket);
+
 function RenderApp(props) {
-  const [myObject, setObject] = useState({ socket: undefined });
+  const [myObject, setObject] = useState({ socket: socket });
 
   useEffect(() => {
+
     console.log('RenderApp');
   }, []);
 
+  function getObject() {
+    return myObject.socket;
+  }
+
   return (
     <Mydiv>
-      <Suspense fallback={<div>Loading SocketIO...</div>}>
-        <SocketContext.Provider
-          value={{ socket: myObject.socket, setObject: setObject }}
-        >
-          <SocketContext.Consumer>
-            {(value) => (
-              <div>
-                <UploadFileMouseTrap
-                  uploadEmitter={uploadFile.bind(value.socket)()}
-                ></UploadFileMouseTrap>
-                <MySocket setObject={value.setObject}></MySocket>
-                <Nav socket={value.socket}></Nav>
-              </div>
-            )}
-          </SocketContext.Consumer>
-        </SocketContext.Provider>
-        <Cytoscape socket={myObject.socket}></Cytoscape>
-      </Suspense>
+      <SocketContext.Provider
+        value={{ getObject: getObject, socket: myObject.socket, setObject: setObject }}
+      >
+        <SocketContext.Consumer>
+          {(value) => (
+            <div>
+              <Nav socket={value.socket}></Nav>
+              <Cytoscape getObject={value.getObject} socket={value.socket} setObject={value.setObject}></Cytoscape>
+            </div>
+          )}
+        </SocketContext.Consumer>
+      </SocketContext.Provider>
     </Mydiv>
   );
 }
 
-export { SocketContext };
+
+
+export { SocketContext, SocketContext2 };
 
 export default RenderApp;

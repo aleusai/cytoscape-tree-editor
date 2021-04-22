@@ -1,62 +1,32 @@
 /*  Emitters */
 //import { socket} from "././js/components/core.js";
+import PubSub from "pubsub-js";
 
 
 export function addNode() {
   // doesn't wotk with es6 -> console.log('CALLER IS', addNode.caller());
   if (this) {
     return (e) =>
-      this.emit("my event", {
-        action: "addNode",
-        content: e,
-      });
+    PubSub.publish("addNode", e);
   }
   return () => { };
 }
 
 export function editNode() {
   if (this) {
-    return (e) =>
-      this.emit("my event", {
-        action: "editNode",
-        content: e,
-      });
+    return (e) => 
+    PubSub.publish("editNode", e);
   }
   return () => { };
 }
 
 export function addPipeline() {
   if (this) {
-    return (e) =>
-      this.emit("my event", {
-        action: "addPipeline",
-        content: e,
-      });
+    return (e) => PubSub.publish("addPipeline", e);
   }
   return () => { };
 }
 
-export function uploadFile() {
-  if (this) {
-    return (e) =>
-      this.emit("my event", {
-        action: "uploadFile",
-        content: JSON.stringify(e),
-      });
-  }
-  return () => { };
-}
-
-export function updateDefault() {
-  if (this) {
-    return (e) =>
-      this.emit("updateDefaults", {
-        action: "updateDefaults",
-        content: e,
-      });
-  }
-  return () => { };
-}
 
 export function getStartupDefaults() {
   if (this) {

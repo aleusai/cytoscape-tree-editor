@@ -99,18 +99,6 @@ function Editors(props) {
         <Dropdown.Item onSelect={func} eventKey="Node Editor">
           Node Editor
         </Dropdown.Item>
-        <Dropdown.Item onSelect={func} eventKey="Save/Load">
-          Save/Load
-        </Dropdown.Item>
-        <Dropdown.Item onSelect={func} eventKey="Full Config Editor">
-          Full Config Editor
-        </Dropdown.Item>
-        <Dropdown.Item onSelect={func} eventKey="Pipeline Editor">
-          Pipeline Editor
-        </Dropdown.Item>
-        <Dropdown.Item onSelect={func} eventKey="Defaults Editor">
-          Defaults Editor
-        </Dropdown.Item>
       </DropdownButton>
     </label>
   );
@@ -148,9 +136,6 @@ function SwipeableTemporaryDrawer(props) {
         </ListItem>
         <ListItem button key="Components">
           <Components></Components>
-        </ListItem>
-        <ListItem button key="Graphs">
-          <Graphs></Graphs>
         </ListItem>
         <ListItem button key="Editors">
           <Editors func={func}></Editors>

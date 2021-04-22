@@ -8,9 +8,11 @@ import PubSub from "pubsub-js";
 import tippy from "tippy.js";
 import "tippy.js/themes/light.css";
 import "tippy.js/themes/light-border.css";
-import React, { Component, useEffect } from "react";
+import React, { useContext, Component, useEffect } from "react";
+import { SocketContext2 as SocketContext } from "../../index.js";
 import CytoscapeComponent from "react-cytoscapejs";
 import { saveAs } from "file-saver";
+import cy_layout from "./cytoscape-layout";
 
 cytoscape.use(popper);
 cytoscape.use(dagre);
@@ -70,9 +72,10 @@ function toRawJson(socket, cy) {
 }
 
 function CytoBoxSelect(props) {
+  const socket = useContext(SocketContext);
   useEffect(() => {
     let cy = props.cytoscapeComponent.current._cy;
-    let socket = props.socket;
+    //let socket = JSON.parse(JSON.stringify(props.socket));
     if (cy) {
       cy.on("boxselect", "node", function (event) {
         var node = event.target;
@@ -93,9 +96,10 @@ function CytoBoxSelect(props) {
 }
 
 function CySpacing(props) {
+  const socket = useContext(SocketContext);
   useEffect(() => {
     let cy = props.cytoscapeComponent.current._cy;
-    let socket = props.socket;
+    //let socket = JSON.parse(JSON.stringify(props.socket));
     if (socket && !("slider" in socket)) socket.slider = 5;
 
     var Mousetrap = require("mousetrap");
@@ -171,7 +175,7 @@ function CySpacing(props) {
         cy.makeLayout(layout_target).run();
       });
     }
-  });
+  }, [socket]);
 
   return <div></div>;
 }
@@ -217,9 +221,10 @@ function CyCollapseExpand(props) {
 }
 
 function CyNodes(props) {
+  const socket = useContext(SocketContext);
   useEffect(() => {
     let cy = props.cytoscapeComponent.current._cy;
-    let socket = props.socket;
+    //let socket = JSON.parse(JSON.stringify(props.socket));
     if (cy)
       cy.on("click", "node", function (event) {
         PubSub.publish("socket.out.click", this.data());
@@ -237,10 +242,10 @@ function CyNodes(props) {
 }
 
 function CyMouseOver(props) {
-
+  const socket = useContext(SocketContext);
   useEffect(() => {
     let cy = props.cytoscapeComponent.current._cy;
-    let socket = props.socket;
+    //let socket = JSON.parse(JSON.stringify(props.socket));
     if (cy && socket) {
       cy.on("mouseover", "node", function (event) {
         try {
@@ -298,9 +303,10 @@ function CyMouseOver(props) {
 }
 
 function CyTabs(props) {
+  const socket = useContext(SocketContext);
   useEffect(() => {
     let cy = props.cytoscapeComponent.current._cy;
-    let socket = props.socket;
+    //let socket = JSON.parse(JSON.stringify(props.socket));
     if (socket && cy) {
       var Mousetrap = require('mousetrap');
       Mousetrap.bind(["ctrl+t"], function () {
@@ -331,10 +337,11 @@ function CyTabs(props) {
 }
 
 function CyNodeSearch(props) {
+  const socket = useContext(SocketContext);
   useEffect(() => {
     /* Searching for a Node */
     let cy = props.cytoscapeComponent.current._cy;
-    let socket = props.socket;
+    //let socket = JSON.parse(JSON.stringify(props.socket));
     var Mousetrap = require("mousetrap");
     if (cy && socket) {
       Mousetrap.bind(["ctrl+f"], function () {
@@ -462,40 +469,13 @@ function CyPopper(props) {
 }
 
 
-function Save(props) {
-
-  useEffect(() => {
-    /* Saving graph to a json file */
-    var Mousetrap = require("mousetrap");
-    let socket = props.socket;
-    if (socket && cy) {
-      Mousetrap.bind(["command+s", "ctrl+s"], function () {
-        let cy = props.cytoscapeComponent.current._cy;
-        if (cy) {
-          socket["rawJson"] = toRawJson(socket, cy);
-        } else {
-          socket["rawJson"] = "";
-        }
-        let filename = window.prompt(
-          "Enter the Filename to save to",
-          "file.json"
-        );
-        if (filename !== null) {
-          var jsonBlob = socket["rawJson"];
-          saveJsonToFile(JSON.stringify(jsonBlob, null, 4), filename);
-        }
-      });
-    }
-  }, [props.socket]);
-
-  return <div></div>;
-}
 
 function DeleteNode(props) {
+  const socket = useContext(SocketContext);
   useEffect(() => {
     /* Delete selected nodes  */
     var Mousetrap = require("mousetrap");
-    let socket = props.socket;
+    //let socket = props.socket;
     if (socket && cy) {
       Mousetrap.bind(["command+del", "ctrl+del", "ctrl+d"], function () {
         let deleteElements = [];
@@ -519,13 +499,13 @@ function DeleteNode(props) {
           }
           socket["graph_type"] == "Json"
 
-          socket.emit("my event", {
-            action: "deleteNode",
-            content: [
-              deleteElements,
-              { answer: socket["graph_type"] == "Json" },
-            ],
-          });
+          //socket.emit("my event", {
+          //  action: "deleteNode",
+          //  content: [
+          //    deleteElements,
+          //    { answer: socket["graph_type"] == "Json" },
+          //  ],
+          //});
           return;
         }
 
@@ -553,16 +533,16 @@ function DeleteNode(props) {
           if (socket["graph_type"] == "Json") {
             socket["elements"] = elements;
           }
-          socket.emit("my event", {
-            action: "deleteNode",
-            content: [
-              deleteElements,
-              {
-                answer_channel:
-                  socket["graph_type"] == "Json"
-              },
-            ],
-          });
+          //socket.emit("my event", {
+          //  action: "deleteNode",
+          //  content: [
+          //    deleteElements,
+          //    {
+          //      answer_channel:
+          //        socket["graph_type"] == "Json"
+          //    },
+          //  ],
+          //});
 
           socket.node = null;
         }
@@ -575,9 +555,10 @@ function DeleteNode(props) {
 
 function CloneNode(props) {
   /* Clone node */
+  const socket = useContext(SocketContext);
   useEffect(() => {
     var Mousetrap = require("mousetrap");
-    let socket = props.socket;
+    //let socket = props.socket;
     let cy = props.cytoscapeComponent.current._cy;
     if (cy && socket) {
       Mousetrap.bind(["command+c", "ctrl+c"], function () {
@@ -636,7 +617,121 @@ function CloneNode(props) {
   }, [props.socket]);
 
   return <div></div>;
-}
+};
+
+function createNode(node_type, cy, myjson, name, socket) {
+
+  if (!("parents_dict" in socket)) {
+    socket['parents_dict'] = {};
+  };
+
+  var id = Math.random().toString(20).substr(2, 6);
+  let c = node_type + '-' + id;
+  let parent = node_type;
+  if (name) {
+    var name = name;
+  }
+  else {
+    var name = c;
+  }
+  console.log('COLOR=', cy_layout.class_dict_colors[node_type]);
+  if (!('root' in socket['parents_dict'])) {
+    var id_root = Math.random().toString(20).substr(2, 6);
+    console.log('ROOT ID', id_root);
+    socket['parents_dict']["root"] = id_root;
+    cy.add({
+      group: 'nodes', 'classes': 'red', data: {
+        'classes': 'red',
+        'parent': 'root',
+        'id': id_root,
+        'Node_Type': 'root',
+        'name': 'root'
+      }
+    });
+  };
+
+  if (myjson) {
+    cy.add({
+      group: 'nodes', 'classes': cy_layout.class_dict_colors[node_type],
+      data: {
+        'classes': cy_layout.class_dict_colors[node_type],
+        'parent': parent,
+        'id': c,
+        'Node_Type': parent,
+        'name': name,
+        [socket["to_client_convention"]]: myjson
+      }
+    })
+  }
+  else {
+    cy.add({
+      group: 'nodes',
+      'classes': cy_layout.class_dict_colors[node_type],
+      data: {
+        'classes': cy_layout.class_dict_colors[node_type],
+        'id': c,
+        'Node_Type': parent + '_' + c,
+        'name': name,
+      }
+    });
+  }
+  if (!(parent in socket['parents_dict'])) {
+    var id_root_parent = Math.random().toString(20).substr(2, 6);
+
+    socket['parents_dict'][parent] = id_root_parent;
+    console.log('PARENT==', socket['parents_dict'][parent], id_root_parent);
+    if (node_type + 'Parent' in socket['defaults']) {
+
+      cy.add({
+        group: 'nodes', 'classes': cy_layout.class_dict_colors[node_type], data: {
+          'classes': 'green',
+          'parent': 'root',
+          'id': id_root_parent,
+          'Node_Type': parent,
+          'name': parent,
+          [socket["to_client_convention"]]: parentData
+        }
+      });
+      console.log('P1', cy.elements());
+    }
+    else {
+      cy.add({
+        group: 'nodes', 'classes': cy_layout.class_dict_colors[node_type],
+        data: {
+          'classes': 'green',
+          'parent': 'root',
+          'id': id_root_parent,
+          'Node_Type': parent,
+          'name': parent
+        }
+      });
+      console.log('P2', id_root_parent, cy.elements());
+    }
+    cy.add({
+      group: 'edges', data: {
+        'classes': 'followerEdge',
+        "id": 'root' + '-' + parent,
+        "source": socket['parents_dict']['root'],
+        "target": socket['parents_dict'][parent]
+
+      }
+    });
+  };
+  console.log('P3', c, socket['parents_dict']['root']);
+  cy.add({
+    group: 'edges', data: {
+      'classes': 'followerEdge',
+      "id": 'root' + '-' + parent + '-' + c,
+      "source": socket['parents_dict'][parent],
+      "target": c
+    }
+  });
+
+
+  return socket;
+
+};
+
 
 class Cytoscape extends Component {
   constructor(props) {
@@ -646,21 +741,24 @@ class Cytoscape extends Component {
     this.state = {};
   }
 
+  //static socket = SocketContext;
 
   componentWillUnmount() {
     try {
       PubSub.unsubscribe(socket['token']);
+      PubSub.unsubscribe(socket['tokenAddNode']);
+      PubSub.unsubscribe(socket['tokenEditNode']);
     } catch (err) {
       console.log(" Cytoscape ERROR", err);
     }
   }
-
   componentDidUpdate() {
+    console.log('CYTO DID UPDATE', this.props.socket);
+  }
+  componentDidMount() {
     let mythis = this;
-    let socket = this.props.socket;
-
     try {
-
+      let socket = { ...mythis.props.socket };
       //var t0 = performance.now()
       let cy = mythis.myRef.current._cy;
       let cyHeadless = mythis.myRefHeadless.current._cy;
@@ -683,10 +781,38 @@ class Cytoscape extends Component {
       }
 
       socket['cy'] = cy;
+      if (!('tokenEditNode' in socket)) {
+        function mySubscriberEditNode(msg, data) {
+          let cy = mythis.myRef.current._cy;
+          let socket = mythis.props.getObject();
+          let node_data = JSON.parse(data);
+          console.log('DATA EDIT=', node_data, node_data['id']);
+          cy.getElementById(node_data['id']).data(node_data);
+          mythis.props.setObject({ socket: socket });
+        };
+        socket['tokenEditNode'] = PubSub.subscribe("editNode", mySubscriberEditNode);
+      }
+
+      if (!('tokenAddNode' in socket)) {
+        function mySubscriberAddNode(msg, data) {
+          let cy = mythis.myRef.current._cy;
+          let socket = mythis.props.getObject();
+          let myjson = socket['defaults'][data];
+          let node_type = data
+          socket = createNode(node_type, cy, myjson, '', socket);
+          let layout = !(layout in socket) ? 'dagre' : socket['layout'];
+          if (!(layout in socket)) socket['layout'] = layout;
+          console.log('LAYOUT=', layout);
+          cy.makeLayout({ name: layout }).run();
+          mythis.props.setObject({ socket: socket });
+        };
+        socket['tokenAddNode'] = PubSub.subscribe("addNode", mySubscriberAddNode);
+      }
 
       if (!('token' in socket)) {
         function mySubscriber(msg, data) {
-          let cy = socket['cy'];
+          let cy = mythis.myRef.current._cy;
+          let socket = mythis.props.getObject();
           cy.elements().remove();
           if (data == 'ALL') {
             cy.add(cyHeadless.elements());
@@ -699,15 +825,16 @@ class Cytoscape extends Component {
           });
           mythis.setState({ popper: cy });
           socket['subgraph'] = true;
+          mythis.props.setObject({ socket: socket });
         }
         socket['token'] = PubSub.subscribe("showSubgraph", mySubscriber);
       }
-
 
       if (socket && socket.layout)
         cy.ready(function () {
           cy.makeLayout(socket.layout).run();
         });
+      mythis.props.setObject({ socket: socket });
     } catch (err) {
       console.log("Cytoscape ERROR", err);
     }
@@ -726,11 +853,16 @@ class Cytoscape extends Component {
       socket.elements.length &&
       socket.styles
     ) {
+      console.log('CHECK RENDER1');
       var layout = socket.layout ? socket.layout : { name: "dagre" };
       var styles = socket.styles;
     } else {
-      var layout = { name: "dagre" };
-      var styles = [];
+      var layout = {
+        name: "circle"
+      };
+      var styles = socket['styles'];
+      console.log('CHECK RENDER2', styles);
+      //socket.styles;
     }
 
 
@@ -752,10 +884,6 @@ class Cytoscape extends Component {
           style={{ height: '100vh', width: '100vw' }}
         ></CytoscapeComponent>
         <CyLayout cytoscapeComponent={mythis.myRef}></CyLayout>
-        <Save
-          socket={mythis.props.socket}
-          cytoscapeComponent={mythis.myRefHeadless}
-        ></Save>
         <DeleteNode
           socket={mythis.props.socket}
           cytoscapeComponent={mythis.myRef}
@@ -805,4 +933,4 @@ class Cytoscape extends Component {
 }
 
 export default Cytoscape;
-//export { CytoscapeComponent };
+export { createNode };
