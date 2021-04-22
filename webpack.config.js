@@ -1,4 +1,5 @@
 var HtmlWebpackChangeAssetsExtensionPlugin = require('html-webpack-change-assets-extension-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
 var mousetrap = require('mousetrap');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -66,6 +67,9 @@ test: /\.scss$/,
     publicPath: './static/'
   },
   plugins: [
+	  new HtmlWebpackPlugin({
+    favicon: "./src/favicon.ico"
+}),
 	  new webpack.DefinePlugin({
   "process.env.NODE_ENV": JSON.stringify("development")
 }),
