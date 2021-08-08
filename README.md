@@ -13,6 +13,8 @@ When editing the Tree, one can create/clone/delete a node, as well as modify the
 
 A Tree can be saved to a json file with a two nesting level; the same structure is used to upload a new Tree. You should adapt or change the corresponding functions, in case you need a different structure to start from (this is also true if you are using the native Cytoscape structure i.e. you will have to change the code).
 
+A simplified (no backend, fewer actions available) Demo of the App can be found at <a href="https://aleusai.github.io/cytoscape-tree-editor/">SIMPLE-DEMO</a>.
+
 To use the App do the following:
 
 1) Clone this repository and change directory into it
